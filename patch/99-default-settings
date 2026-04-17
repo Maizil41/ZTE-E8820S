@@ -1,7 +1,7 @@
 # Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
 # Uncomment lines to apply:
 #
-wlan_name="OpenWrt"
+wlan_name="MutiaraWrt"
 wlan_password="12345678"
 
 # Configure WLAN
@@ -15,5 +15,12 @@ if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
   
   uci commit wireless
 fi
+
+# Disable DHCPv6 & RA on LAN
+uci -q del dhcp.lan.ra
+uci -q del dhcp.lan.ra_slaac
+uci -q del dhcp.lan.ra_flags
+uci -q del dhcp.lan.dhcpv6
+uci commit dhcp
 
 echo "All done!"
