@@ -1,4 +1,4 @@
-name: Build OpenWrt Firmware
+name: Build OpenWrt 23
 run-name: Build OpenWrt Firmware for ZTE E8820S ${{ inputs.repo_branch }}
 
 on:
