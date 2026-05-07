@@ -1,24 +1,50 @@
 # Beware! This script will be in /rom/etc/uci-defaults/ as part of the image.
-# Uncomment lines to apply:
-#
+
 wlan_name="MutiaraWrt"
 wlan_password="12345678"
 
-# Configure WLAN
-# More options: https://openwrt.org/docs/guide-user/network/wifi/basic#wi-fi_interfaces
+# Set root/LuCI password
+echo -e "mutiara\nmutiara" | passwd root
+
 if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
   uci set wireless.@wifi-device[0].disabled='0'
   uci set wireless.@wifi-iface[0].disabled='0'
   uci set wireless.@wifi-iface[0].encryption='psk2'
   uci set wireless.@wifi-iface[0].ssid="$wlan_name"
   uci set wireless.@wifi-iface[0].key="$wlan_password"
-  
+
   uci commit wireless
 fi
 
-# Disable DHCPv6 & RA on LAN
+# Disable IPv6 DHCP & RA
 uci -q del dhcp.lan.ra
 uci -q del dhcp.lan.dhcpv6
 uci commit dhcp
+
+# WAN1
+uci set network.wan1='interface'
+uci set network.wan1.proto='dhcp'
+uci set network.wan1.device='eth1'
+uci set network.wan1.metric='10'
+
+# WAN2
+uci set network.wan2='interface'
+uci set network.wan2.proto='dhcp'
+uci set network.wan2.device='wwan0'
+uci set network.wan2.metric='20'
+
+# USB Tethering
+uci set network.tethering='interface'
+uci set network.tethering.proto='dhcp'
+uci set network.tethering.device='usb0'
+
+uci commit network
+
+# Add interfaces to WAN firewall zone
+uci add_list firewall.wan.network='wan1'
+uci add_list firewall.wan.network='wan2'
+uci add_list firewall.wan.network='tethering'
+
+uci commit firewall
 
 echo "All done!"
