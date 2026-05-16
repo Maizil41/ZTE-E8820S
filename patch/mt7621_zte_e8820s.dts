@@ -24,9 +24,11 @@
     leds {
         compatible = "gpio-leds";
 
-        led_power: power {
-			label = "white:power";
-			gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+		led_power: power {
+    		label = "white:power";
+    		gpios = <&gpio 16 GPIO_ACTIVE_LOW>;
+    		default-state = "on";
+    		linux,default-trigger = "default-on";
 		};
 
 		led_sys: sys {
