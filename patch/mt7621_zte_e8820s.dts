@@ -196,3 +196,10 @@
 		reg = <0xe006 0x6>;
 	};
 };
+
+&{/i2c@900} {
+    status = "okay";
+
+    pinctrl-names = "default";
+    pinctrl-0 = <&i2c_pins>;
+};
