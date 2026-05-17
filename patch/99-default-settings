@@ -6,6 +6,9 @@ wlan_password="12345678"
 # Set root/LuCI password
 echo -e "mutiara\nmutiara" | passwd root
 
+# Remove signature check
+sed -i 's/option check_signature/# option check_signature/g' /etc/opkg.conf
+
 # Enable WiFi 2.4GHz & 5GHz
 if [ -n "$wlan_name" -a -n "$wlan_password" -a ${#wlan_password} -ge 8 ]; then
   uci set wireless.@wifi-device[0].disabled='0'
