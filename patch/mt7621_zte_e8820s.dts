@@ -197,9 +197,8 @@
 	};
 };
 
-&{/i2c@900} {
+&i2c {
     status = "okay";
-
     pinctrl-names = "default";
     pinctrl-0 = <&i2c_pins>;
 };
