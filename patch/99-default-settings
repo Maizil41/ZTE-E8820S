@@ -34,8 +34,13 @@ uci set system.@system[0].hostname='Mutiara-Wrt'
 # Set timezone (WIB Asia/Jakarta)
 uci set system.@system[0].zonename='Asia/Jakarta'
 uci set system.@system[0].timezone='WIB-7'
-
 uci commit system
+
+# ttyd config
+uci -q delete ttyd.@ttyd[0].interface
+uci set ttyd.@ttyd[0].debug='7'
+uci set ttyd.@ttyd[0].command='/bin/bash --login'
+uci commit ttyd
 
 # Disable IPv6 DHCP & RA
 uci -q del dhcp.lan.ra
@@ -58,14 +63,12 @@ uci set network.wan2.metric='20'
 uci set network.tethering='interface'
 uci set network.tethering.proto='dhcp'
 uci set network.tethering.device='usb0'
-
 uci commit network
 
 # Add interfaces to WAN firewall zone
 uci add_list firewall.@zone[1].network='wan1'
 uci add_list firewall.@zone[1].network='wan2'
 uci add_list firewall.@zone[1].network='tethering'
-
 uci commit firewall
 
 echo "All done!"
